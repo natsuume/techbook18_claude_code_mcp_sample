@@ -80,31 +80,8 @@ YouTube Data API v3を利用した動画検索MCP Server。
 - 詳細なセットアップガイド付き
 - 自動テストスクリプト完備
 
-## 🤖 第4章: 自律的活用事例
+## 第4章: Claude Codeを自律的に動作させる
 
-### sample1-test-fixer
-CI/CDパイプラインでテストが失敗した際に、Claude Codeを使用して自動的にコードを修正するGitHub Action。
-
-**機能:**
-- 失敗したテストのログを分析
-- エラーの自動修正
-- 修正内容の自動コミット・プッシュ
-
-### sample2-discussion-bot
-GitHub Discussionsを通じてClaude Codeと対話できるGitHub Action。
-
-**機能:**
-- `@claude-code`メンション検知
-- 質問への自動回答
-- 必要に応じたコード生成とPR作成
-
-### sample3-doc-updater
-プルリクエストのマージ時に、変更内容に基づいてドキュメントを自動更新するGitHub Action。
-
-**機能:**
-- PRの変更内容分析
-- API Reference、Configuration、Features、CHANGELOGの自動更新
-- GitHub Wikiとメインリポジトリへの同期
 
 ## ⚙️ 必要条件
 
