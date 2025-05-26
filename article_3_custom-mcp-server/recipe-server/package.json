@@ -1,0 +1,31 @@
+{
+  "name": "recipe-mcp-server",
+  "version": "1.0.0",
+  "description": "Recipe MCP Server implementation example",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "test": "tsx test/test.ts",
+    "test:claude-code": "claude mcp add-json recipe '{\"type\": \"stdio\", \"command\": \"node\", \"args\": [\"src/index.ts\"]}' && claude -p \"豚肉と大根を使った料理のレシピを1つ教えてください。\" --allowedTools \"recipe\" && claude mcp remove recipe",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "cheerio": "^1.0.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@stylistic/eslint-plugin": "^4.4.0",
+    "@types/node": "^22.10.5",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.32.1"
+  }
+}

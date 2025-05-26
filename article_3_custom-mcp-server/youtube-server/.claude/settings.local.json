@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run lint:*)",
+      "Bash(chmod:*)",
+      "Bash(node:*)",
+      "Bash(timeout 5s npm run dev 2>&1)",
+      "mcp__youtube-server__search_videos"
+    ],
+    "deny": []
+  }
+}

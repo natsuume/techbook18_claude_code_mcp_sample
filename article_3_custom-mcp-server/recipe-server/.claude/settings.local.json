@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(grep:*)",
+      "Bash(npm test)",
+      "mcp__recipe__search_recipes",
+      "Bash(npx tsx:*)",
+      "mcp__recipe__get_recipe_details",
+      "Bash(rm:*)"
+    ],
+    "deny": []
+  }
+}

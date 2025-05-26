@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test)",
+      "Bash(npm install:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run lint:*)",
+      "Bash(chmod:*)",
+      "Bash(claude code mcp list)",
+      "Bash(npm run test:integration:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(npm run test:*)",
+      "mcp__sample__repeat_string"
+    ],
+    "deny": []
+  }
+}

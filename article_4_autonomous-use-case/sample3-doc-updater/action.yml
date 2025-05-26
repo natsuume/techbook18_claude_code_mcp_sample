@@ -1,0 +1,23 @@
+name: 'Claude Documentation Updater'
+description: 'Automatically update documentation based on code changes'
+
+inputs:
+  anthropic_api_key:
+    description: 'Anthropic API Key'
+    required: true
+  github_token:
+    description: 'GitHub Token'
+    required: true
+  pr_number:
+    description: 'Pull Request number'
+    required: true
+  pr_title:
+    description: 'Pull Request title'
+    required: true
+  pr_body:
+    description: 'Pull Request body'
+    required: true
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

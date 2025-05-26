@@ -1,0 +1,32 @@
+{
+  "name": "youtube-mcp-server",
+  "version": "1.0.0",
+  "description": "YouTube MCP Server implementation example",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "test": "tsx test/test.ts",
+    "test:api": "node test/api-test.js",
+    "test:claude-code": "claude mcp add-json youtube-server '{\"type\": \"stdio\", \"command\": \"node\", \"args\": [\"src/index.ts\"]}' && claude -p \"YouTubeで私が登録しているVTuberの新しい雑談配信を教えて\" --allowedTools \"youtube-server\" && claude mcp remove youtube-server",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "dotenv": "^16.5.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@stylistic/eslint-plugin": "^4.4.0",
+    "@types/node": "^22.10.5",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.32.1"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint)",
+      "mcp__narou__get_ranking",
+      "mcp__narou__search_novels"
+    ],
+    "deny": []
+  }
+}
