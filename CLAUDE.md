@@ -20,6 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```
 article_3_custom-mcp-server/
 ├── basic-implementation/    # 基本的な文字列操作ツール
+├── dummy-workflow-test/     # GitHub Actionsワークフロー検証用
 ├── narou-server/           # 小説家になろうAPI連携
 ├── recipe-server/          # レシピ検索（Webスクレイピング）
 └── youtube-server/         # YouTube Data API v3統合

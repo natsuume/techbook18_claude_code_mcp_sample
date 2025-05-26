@@ -25,6 +25,7 @@
 techbook18_claude_code_mcp_sample/
 ├── article_3_custom-mcp-server/     # 第3章: カスタムMCPサーバー
 │   ├── basic-implementation/        # 基本実装（文字列繰り返し）
+│   ├── dummy-workflow-test/         # ワークフロー検証用（テスト/インフラ）
 │   ├── narou-server/               # 小説家になろうAPI連携
 │   ├── recipe-server/              # レシピ検索（白ごはん.com）
 │   └── youtube-server/             # YouTube Data API v3連携
@@ -54,6 +55,17 @@ techbook18_claude_code_mcp_sample/
 - MCPプロトコルの基本概念を理解するのに最適
 - 完全なテストスイート付き
 - TypeScript + Zodによる型安全な実装
+
+### dummy-workflow-test
+GitHub Actionsワークフローの検証用ダミーMCP Server。
+
+**提供機能:**
+- `dummy_tool`: ワークフロー検証用のメッセージ表示ツール
+
+**特徴:**
+- GitHub Actions `update-docs-on-merge.yml` の動作検証用
+- テスト・インフラ目的のサンプル実装
+- ワークフロートリガーの動作確認に使用
 
 ### narou-server
 「小説家になろう」のAPIを利用したMCP Server実装例。
