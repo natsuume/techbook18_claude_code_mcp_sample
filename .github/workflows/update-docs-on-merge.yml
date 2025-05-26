@@ -26,23 +26,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.base.ref }}
-      
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v45
-        with:
-          files_yaml: |
-            mcp_servers:
-              - 'article_3_custom-mcp-server/**/src/**'
-              - 'article_3_custom-mcp-server/**/test/**'
-              - 'article_3_custom-mcp-server/**/package.json'
-            readme_files:
-              - '**/README.md'
-            github_actions:
-              - '.github/workflows/**'
-            article_4:
-              - 'article_4_autonomous-use-case/**'
-      
+            
       - name: Update documentation with Claude
         uses: anthropics/claude-code-action@beta
         with:
@@ -51,13 +35,7 @@ jobs:
           timeout_minutes: "30"
           mode: "edit"
           direct_prompt: |
-            以下の変更がマージされました。必要に応じてREADME.mdとCLAUDE.mdを更新してください。
-            
-            ## 変更されたファイル
-            ### MCPサーバー関連: ${{ steps.changed-files.outputs.mcp_servers_all_changed_files }}
-            ### README: ${{ steps.changed-files.outputs.readme_files_all_changed_files }}
-            ### GitHub Actions: ${{ steps.changed-files.outputs.github_actions_all_changed_files }}
-            ### 第4章サンプル: ${{ steps.changed-files.outputs.article_4_all_changed_files }}
+            マージされたPullRequestの変更を確認し、必要に応じてREADME.mdとCLAUDE.mdを更新してください。
             
             ## 更新ガイドライン
             
