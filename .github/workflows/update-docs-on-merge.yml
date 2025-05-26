@@ -1,0 +1,105 @@
+name: Update Documentation on PR Merge
+
+on:
+  pull_request:
+    types: [closed]
+    paths-ignore:
+      # README.mdとCLAUDE.mdの変更は除外
+      - 'README.md'
+      - 'CLAUDE.md'
+      - '**/README.md'
+      - '**/CLAUDE.md'
+
+jobs:
+  update-documentation:
+    # PRがマージされた場合のみ実行
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.base.ref }}
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v45
+        with:
+          files_yaml: |
+            mcp_servers:
+              - 'article_3_custom-mcp-server/**/src/**'
+              - 'article_3_custom-mcp-server/**/test/**'
+              - 'article_3_custom-mcp-server/**/package.json'
+            readme_files:
+              - '**/README.md'
+            github_actions:
+              - '.github/workflows/**'
+            article_4:
+              - 'article_4_autonomous-use-case/**'
+      
+      - name: Update documentation with Claude
+        uses: anthropics/claude-code-action@beta
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          timeout_minutes: "30"
+          mode: "edit"
+          direct_prompt: |
+            以下の変更がマージされました。必要に応じてREADME.mdとCLAUDE.mdを更新してください。
+            
+            ## 変更されたファイル
+            ### MCPサーバー関連: ${{ steps.changed-files.outputs.mcp_servers_all_changed_files }}
+            ### README: ${{ steps.changed-files.outputs.readme_files_all_changed_files }}
+            ### GitHub Actions: ${{ steps.changed-files.outputs.github_actions_all_changed_files }}
+            ### 第4章サンプル: ${{ steps.changed-files.outputs.article_4_all_changed_files }}
+            
+            ## 更新ガイドライン
+            
+            1. **新しいMCPサーバーが追加された場合**:
+               - README.mdの「プロジェクト構成」セクションに追加
+               - 各プロジェクトの詳細説明を追加
+               - CLAUDE.mdの「ディレクトリ構成」を更新
+            
+            2. **既存のMCPサーバーが更新された場合**:
+               - 機能追加があればREADME.mdの該当セクションを更新
+               - 新しいコマンドやAPIが追加されていれば追記
+            
+            3. **GitHub Actionsが追加/更新された場合**:
+               - README.mdの「第4章」セクションを更新
+               - CLAUDE.mdの「GitHub Actions」セクションを更新
+            
+            4. **第4章のサンプルが変更された場合**:
+               - README.mdの「第4章: 自律的活用事例」セクションを更新
+               - 新しいサンプルの説明を追加
+            
+            5. **package.jsonが変更された場合**:
+               - 新しいスクリプトコマンドがあればドキュメントに追加
+               - 依存関係の重要な変更があれば「必要条件」を更新
+            
+            ## 注意事項
+            - 既存の内容は可能な限り保持する
+            - 日本語で記述する
+            - 技術的な正確性を保つ
+            - README.mdは初心者にも分かりやすく
+            - CLAUDE.mdは開発者向けの詳細情報を含める
+            
+            変更が必要ない場合は、ファイルを更新しないでください。
+      
+      - name: Create commit if files were changed
+        run: |
+          if [[ -n $(git status -s) ]]; then
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "github-actions[bot]"
+            git add README.md CLAUDE.md
+            git commit -m "📝 Update documentation after PR #${{ github.event.pull_request.number }} merge
+
+            Auto-updated by GitHub Actions based on changes in:
+            ${{ steps.changed-files.outputs.all_changed_files }}"
+            git push
+          else
+            echo "No documentation updates needed"
+          fi
