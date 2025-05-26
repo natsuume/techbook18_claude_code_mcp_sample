@@ -10,11 +10,14 @@
 - [第4章: 自律的活用事例](#第4章-自律的活用事例)
 - [必要条件](#必要条件)
 - [クイックスタート](#クイックスタート)
+- [新規MCPサーバー実装時の手順](#新規mcpサーバー実装時の手順)
+- [テスト戦略](#テスト戦略)
+- [注意事項](#注意事項)
 - [ライセンス](#ライセンス)
 
 ## 🎯 概要
 
-このリポジトリには、Claude CodeとMCP (Model Context Protocol) Serverを活用した実践的なサンプルコードが含まれています。基本的なMCPサーバーの実装から、GitHub Actionsを使った自動化まで、幅広い用途をカバーしています。
+このリポジトリは「Claude Code × MCP」技術書のサンプルコード集です。Model Context Protocol (MCP) サーバーの実装例を提供し、Claude Codeとの統合方法を示しています。基本的なMCPサーバーの実装から、GitHub Actionsを使った自動化まで、幅広い用途をカバーしています。
 
 ## 📁 プロジェクト構成
 
@@ -32,6 +35,14 @@ techbook18_claude_code_mcp_sample/
 ```
 
 ## 🔧 第3章: カスタムMCPサーバー
+
+### MCPサーバー実装パターン
+すべてのMCPサーバーは以下の共通パターンに従います：
+
+1. **通信方式**: 標準入出力（stdio）経由のJSON-RPC
+2. **SDK**: `@modelcontextprotocol/sdk` v1.0.8
+3. **スキーマ定義**: Zodによる型安全な実装
+4. **エラーハンドリング**: McpErrorクラスを使用した統一的なエラー処理
 
 ### basic-implementation
 最小限のMCP Serverの実装例。文字列を指定回数繰り返すシンプルなツールを提供します。
@@ -80,8 +91,11 @@ YouTube Data API v3を利用した動画検索MCP Server。
 - 詳細なセットアップガイド付き
 - 自動テストスクリプト完備
 
-## 第4章: Claude Codeを自律的に動作させる
+## 🤖 第4章: Claude Codeを自律的に動作させる
 
+### GitHub Actions
+
+Claude公式のGitHub Actionsおよび、書籍サンプル用のカスタムアクションを使用して、CI/CDパイプラインを構築しています。第4章のサンプルではこれらのアクションを活用した自律的なタスク実行を紹介します。
 
 ## ⚙️ 必要条件
 
@@ -122,6 +136,33 @@ claude -p "「Hello」を3回繰り返してください" --allowedTools "basic-
 claude mcp remove basic-server
 ```
 
+### 共通コマンド
+すべてのMCPサーバープロジェクトで以下のコマンドが利用可能：
+
+```bash
+# セットアップ
+npm install              # 依存関係のインストール
+
+# 開発
+npm run dev             # TypeScriptを直接実行（tsx使用）
+npm run build           # dist/にJavaScriptをビルド
+npm start               # ビルド済みサーバーを起動
+
+# 品質管理
+npm test                # テスト実行
+npm run lint            # ESLintチェック
+npm run lint:fix        # ESLint自動修正
+
+# Claude Code連携
+npm run test:claude-code  # Claude Codeでの実動作確認テスト
+```
+
+### 単一テストの実行
+特定のテストケースのみ実行する場合：
+```bash
+npm test -- --grep "特定のテスト名"
+```
+
 ## 📖 各プロジェクトの詳細
 
 各サブディレクトリには独自のREADME.mdがあり、以下の情報が含まれています：
@@ -132,6 +173,38 @@ claude mcp remove basic-server
 - ⚠️ **注意事項**: API制限、利用規約、セキュリティ考慮事項
 - 🐛 **トラブルシューティング**: よくある問題と解決方法
 
+## 🛠️ 新規MCPサーバー実装時の手順
+
+1. **既存実装を参考にする**
+   - `basic-implementation/`が最もシンプルな実装例
+   - 必要なファイル構成をコピー
+
+2. **必須ファイル**
+   - `src/index.ts`: サーバー実装
+   - `test/test.ts`: テストコード
+   - `package.json`: 統一されたスクリプト定義
+   - `tsconfig.json`: TypeScript設定
+   - `eslint.config.mjs`: リンター設定
+
+3. **実装のポイント**
+   - ツール定義は必ずZodスキーマで型定義
+   - エラーは`McpError`でラップ
+   - 非同期処理は適切にawaitを使用
+   - 環境変数が必要な場合はREADMEに明記
+
+## 🧪 テスト戦略
+
+### ユニットテスト
+- Mochaフレームワークを使用
+- 各ツールの正常系・異常系をカバー
+- 外部APIはモック化を検討
+
+### Claude Code統合テスト
+`test:claude-code`スクリプトで実際のClaude Codeとの動作確認：
+1. MCPサーバーをClaude Codeに登録
+2. 実際のツール呼び出しをテスト
+3. レスポンスの検証
+
 ## 🤝 コントリビューション
 
 1. このリポジトリをフォーク
@@ -139,6 +212,13 @@ claude mcp remove basic-server
 3. 変更をコミット: `git commit -m 'Add amazing feature'`
 4. ブランチにプッシュ: `git push origin feature/amazing-feature`
 5. プルリクエストを作成
+
+## ⚠️ 注意事項
+
+- **APIキー管理**: 環境変数で管理し、コードにハードコードしない
+- **エラーメッセージ**: 日本語で分かりやすく記述
+- **ログ出力**: console.errorのみ使用（stdoutは通信用）
+- **型安全性**: TypeScriptの厳格モードを維持
 
 ## 📄 ライセンス
 
