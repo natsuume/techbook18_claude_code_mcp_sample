@@ -18,6 +18,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
     
     steps:
       - name: Checkout repository
@@ -46,6 +47,7 @@ jobs:
         uses: anthropics/claude-code-action@beta
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           timeout_minutes: "30"
           mode: "edit"
           direct_prompt: |
@@ -88,18 +90,10 @@ jobs:
             - CLAUDE.mdは開発者向けの詳細情報を含める
             
             変更が必要ない場合は、ファイルを更新しないでください。
-      
-      - name: Create commit if files were changed
-        run: |
-          if [[ -n $(git status -s) ]]; then
-            git config --local user.email "github-actions[bot]@users.noreply.github.com"
-            git config --local user.name "github-actions[bot]"
-            git add README.md CLAUDE.md
-            git commit -m "📝 Update documentation after PR #${{ github.event.pull_request.number }} merge
-
-            Auto-updated by GitHub Actions based on changes in:
-            ${{ steps.changed-files.outputs.all_changed_files }}"
-            git push
-          else
-            echo "No documentation updates needed"
-          fi
+            
+            ## コミット方法
+            必要な変更がある場合は、GitHubのgitコマンドまたはGitHub MCP Serverを使用して：
+            1. 変更をステージング
+            2. 以下のメッセージでコミット：
+               "📝 Update documentation after PR #${{ github.event.pull_request.number }} merge"
+            3. 新しいブランチにプッシュ
